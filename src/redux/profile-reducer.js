@@ -56,7 +56,7 @@ export let addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostTex
 
 export let setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile })
 export let setUserStatus = (status) => ({ type: SET_USER_STATUS, status })
-export let setUserPhoto = (photos) => ({ type: SET_USER_STATUS, photos })
+export let setUserPhoto = (photos) => ({ type: SET_USER_PHOTO, photos })
 
 // Redux-Thunk
 
