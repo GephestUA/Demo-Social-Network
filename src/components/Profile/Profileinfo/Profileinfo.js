@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Preloader from '../../common/Preloader/Preloader'
+import ProfileDataForm from './ProfileDataForm'
 import s from './ProfileInfo.module.css'
 import ProfileStatusHooks from './ProfileStatusHooks'
 
 const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto }) => {
+  let [editMode, setEditMode] = useState(false)
+
   if (!profile) {
     return <Preloader />
   }
@@ -22,17 +25,22 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto }) 
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDGQO5-8CPA9Hzl5_wLkAf6VtlMw52q7IwRw&usqp=CAU'
           }
         ></img>
-        {!isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
+        {isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
         <ProfileStatusHooks status={status} updateUserStatus={updateUserStatus} />
-        <ProfileData profile={profile} />
+        {editMode ? (
+          <ProfileDataForm />
+        ) : (
+          <ProfileData profile={profile} isOwner={isOwner} goToEditMode={() => setEditMode(true)} />
+        )}
       </div>
     </div>
   )
 }
 
-const ProfileData = ({ profile }) => {
+const ProfileData = ({ profile, isOwner, goToEditMode }) => {
   return (
     <div>
+      <div>{isOwner && <button onClick={goToEditMode}> Edit</button>}</div>
       <div>
         <b>Full name</b>: {profile.fullName}
       </div>
