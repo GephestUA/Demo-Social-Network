@@ -3,6 +3,7 @@ import { profileAPI, usersAPI } from '../api/api'
 const ADD_POST = 'ADD-POST'
 const SET_USER_PROFILE = 'SET-USERS-PROFILE'
 const SET_USER_STATUS = 'SET-USERS-STATUS'
+const SET_USER_PHOTO = 'SET-USERS-PHOTO'
 
 let initialValue = {
   postsData: [
@@ -38,6 +39,12 @@ const profileReducer = (state = initialValue, action) => {
         status: action.status,
       }
     }
+    case SET_USER_PHOTO: {
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      }
+    }
     default:
       return state
   }
@@ -49,6 +56,7 @@ export let addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostTex
 
 export let setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile })
 export let setUserStatus = (status) => ({ type: SET_USER_STATUS, status })
+export let setUserPhoto = (photos) => ({ type: SET_USER_STATUS, photos })
 
 // Redux-Thunk
 
@@ -64,6 +72,14 @@ export let getUserStatus = (userId) => {
     profileAPI.getStatus(userId).then((response) => {
       dispatch(setUserStatus(response.data))
     })
+  }
+}
+export let savePhoto = (file) => {
+  return async (dispatch) => {
+    let response = await profileAPI.savePhoto(file)
+    if (response.data.resultCode === 0) {
+      dispatch(setUserPhoto(response.data.data.photos))
+    }
   }
 }
 export let updateUserStatus = (status) => {
