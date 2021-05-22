@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Preloader from '../../common/Preloader/Preloader'
-import ProfileDataForm from './ProfileDataForm'
+import ProfileDataFormReduxForm from './ProfileDataForm'
 import s from './ProfileInfo.module.css'
 import ProfileStatusHooks from './ProfileStatusHooks'
 
@@ -16,6 +16,10 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto }) 
       savePhoto(e.target.files[0])
     }
   }
+
+  const onSubmit = (formData) => {
+    console.log(formData)
+  }
   return (
     <div>
       <div className={s.descriptionBlock}>
@@ -28,7 +32,7 @@ const ProfileInfo = ({ profile, status, updateUserStatus, isOwner, savePhoto }) 
         {isOwner && <input type={'file'} onChange={onMainPhotoSelected} />}
         <ProfileStatusHooks status={status} updateUserStatus={updateUserStatus} />
         {editMode ? (
-          <ProfileDataForm />
+          <ProfileDataFormReduxForm onSubmit={onSubmit} />
         ) : (
           <ProfileData profile={profile} isOwner={isOwner} goToEditMode={() => setEditMode(true)} />
         )}
